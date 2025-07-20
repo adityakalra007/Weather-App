@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const WeatherApp = () => {
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState("Delhi");
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -22,6 +22,7 @@ export const WeatherApp = () => {
 
         const data = await response.json();
         setWeather(data);
+        setCity("");
     }
      catch(err){
             setError(err.message);
@@ -31,6 +32,10 @@ export const WeatherApp = () => {
     }
 
   };
+
+  useEffect(()=>{
+    handleSearch();
+  },[]);
 
   return (
     <>
