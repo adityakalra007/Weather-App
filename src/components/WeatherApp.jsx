@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion ,spring} from "framer-motion";
 
 export const WeatherApp = () => {
   const [city, setCity] = useState("Delhi");
@@ -39,7 +40,7 @@ export const WeatherApp = () => {
 
   return (
     <>
-      <div className="min-h-screen flex flex-col items-center justify-center bg-blue-100 p-4">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 ">
         <h1 className="text-3xl font-semibold mb-6">Weather App</h1>
 
         <div className="flex space-x-2 mb-6">
@@ -66,16 +67,24 @@ export const WeatherApp = () => {
         
 
 
-        <div className="mt-4">
+        <div>
         {loading && <p className="text-blue-800">Loading...</p>}
-         {error && <p className="text-red-600 mt-4">{error}</p>}
+         {error && <motion.p initial={{opacity:0}} animate={{opacity:1}} className="bg-red-600 mt-4 px-4 py-2 rounded-sm text-white">{error}</motion.p>}
 
           {weather && (
-            <div className="bg-white/50 rounded-xl hover:bg-white/80 text-center p-10 px-20 shadow-xl ">
+            <motion.div 
+            initial={{opacity:0,y:50}}
+            animate={{opacity:1,y:0}}
+            transition={{duration:0.8,ease:"easeOut"}}
+
+            className="bg-white/50 rounded-xl hover:bg-white/80 text-center py-30 px-40 shadow-xl ">
               <h2 className="text-xl font-medium">
                 {weather.name}, {weather.sys.country}
               </h2>
-              <img
+              <motion.img
+              initial={{scale:0.8}}
+              animate={{scale:1.2}}
+              transition={{duration:0.8,ease:"easeInOut",delay:0.5}}
       src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
       alt={weather.weather[0].description}
       className="mx-auto"
@@ -83,7 +92,7 @@ export const WeatherApp = () => {
 
               <p className="text-lg capitalize">{weather.weather[0].main}</p>
               <p className="text-2xl font-bold">{weather.main.temp}°C</p>
-            </div>
+            </motion.div>
           )}
         </div>
       </div>
