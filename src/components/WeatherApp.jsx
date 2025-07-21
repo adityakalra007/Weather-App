@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion ,spring} from "framer-motion";
+import { Spinner } from "./Spinner";
 
 export const WeatherApp = () => {
   const [city, setCity] = useState("Delhi");
@@ -11,19 +12,24 @@ export const WeatherApp = () => {
 
     const API_KEY = "b3c7b226b8e0258a86622192fa590f56";
     if(!city) return;
+
     setLoading(true);
     setError("");
     setWeather(null);
-
+    
     try{
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
         if(!response.ok){
             throw new Error("City Not Found");
         }
-
+   await new Promise((resolve) => setTimeout(resolve,1000));
         const data = await response.json();
         setWeather(data);
+
+     
+
         setCity("");
+
     }
      catch(err){
             setError(err.message);
@@ -37,6 +43,8 @@ export const WeatherApp = () => {
   useEffect(()=>{
     handleSearch();
   },[]);
+
+
 
   return (
     <>
@@ -68,7 +76,7 @@ export const WeatherApp = () => {
 
 
         <div>
-        {loading && <p className="text-blue-800">Loading...</p>}
+        {loading && <Spinner></Spinner>}
          {error && <motion.p initial={{opacity:0}} animate={{opacity:1}} className="bg-red-600 mt-4 px-4 py-2 rounded-sm text-white">{error}</motion.p>}
 
           {weather && (
